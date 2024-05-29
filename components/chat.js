@@ -73,7 +73,7 @@ const Chat = ({ route, navigation }) => {
   );
 };
 
-// Define styles for the component
+// Define the styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
