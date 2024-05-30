@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import { StyleSheet, View, Platform, KeyboardAvoidingView } from "react-native";
+import {
+  onSnapshot,
+  query,
+  orderBy,
+  collection,
+  addDoc,
+} from "firebase/firestore";
 
 // Destructure name and background from route.params
-const Chat = ({ route, navigation }) => {
+const Chat = ({ db, route, navigation }) => {
+  const { userID } = route.params;
   const { name, background } = route.params;
   const [messages, setMessages] = useState([]);
   const onSend = (newMessages) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, newMessages)
-    );
+    addDoc(collection(db, "messages"), newMessages[0]);
   };
 
   const renderBubble = (props) => {
@@ -29,25 +35,30 @@ const Chat = ({ route, navigation }) => {
   };
 
   // useEffect hook to set messages options
+  // Create a query to get the "messages" collection from the Firestore database
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Hello developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 2,
-        text: "This is a system message",
-        createdAt: new Date(),
-        system: true,
-      },
-    ]);
+    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+
+    // Subscribe to changes in the "messages" collection using onSnapshot.
+    // This function will be called whenever there are changes in the collection.
+    const unsubMessages = onSnapshot(q, (documentsSnapshot) => {
+      // Initialize an empty array to store the new messages
+      let newMessages = [];
+      // Iterate through each document in the snapshot
+      documentsSnapshot.forEach((doc) => {
+        newMessages.push({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: new Date(doc.data().createdAt.toMillis()),
+        });
+      });
+      setMessages(newMessages);
+    });
+
+    // Clean up code
+    return () => {
+      if (unsubMessages) unsubMessages();
+    };
   }, []);
 
   // useEffect hook to set navigation options
@@ -63,7 +74,8 @@ const Chat = ({ route, navigation }) => {
         renderBubble={renderBubble}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: 1,
+          _id: userID,
+          name: name,
         }}
       />
       {Platform.OS === "android" ? (
@@ -73,7 +85,7 @@ const Chat = ({ route, navigation }) => {
   );
 };
 
-// Define the styles for the component
+// Define styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
