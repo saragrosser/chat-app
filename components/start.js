@@ -42,7 +42,7 @@ const Start = ({ navigation }) => {
       style={styles.imageBackground}
       resizeMode="cover"
     >
-      <Text style={styles.appTitle}>CHAT APP</Text>
+      <Text style={styles.appTitle}>APP Title</Text>
       <View style={styles.container}>
         <TextInput
           style={styles.textInput}
