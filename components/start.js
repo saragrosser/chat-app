@@ -42,7 +42,7 @@ const Start = ({ navigation }) => {
       style={styles.imageBackground}
       resizeMode="cover"
     >
-      <Text style={styles.appTitle}>APP Title</Text>
+      <Text style={styles.appTitle}>ChatApp</Text>
       <View style={styles.container}>
         <TextInput
           style={styles.textInput}
@@ -56,10 +56,6 @@ const Start = ({ navigation }) => {
           <View style={styles.colorButtonsContainer}>
             {/* Render a TouchableOpacity for each color option */}
             <TouchableOpacity
-              accessible={true}
-              accessibilityLabel="More options"
-              accessibilityHint="Lets you choose to send an image or your geolocation."
-              accessibilityRole="button"
               style={[
                 styles.chooseColor,
                 { backgroundColor: "#090C08" },
@@ -107,7 +103,6 @@ const Start = ({ navigation }) => {
   );
 };
 
-// Define styles for the component
 const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
@@ -127,27 +122,30 @@ const styles = StyleSheet.create({
     height: "44%",
     backgroundColor: "white",
     alignItems: "center",
-    marginBottom: 30,
+    marginBottom: 20,
     justifyContent: "space-evenly",
+    borderRadius: 4,
   },
 
   textInput: {
-    width: "88%",
-    padding: 15,
+    width: "84%",
+    padding: 10,
     borderWidth: 1,
     fontSize: 16,
     fontWeight: "300",
     color: "#757083",
     opacity: 0.7,
     borderColor: "#757083",
+    borderRadius: 4,
   },
   button: {
-    width: "88%",
-    height: "20%",
+    width: "84%",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#757083",
     padding: 10,
+    marginTop: 5,
+    borderRadius: 4,
   },
   textButton: {
     fontSize: 16,
@@ -155,15 +153,13 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   chooseColorBox: {
-    width: "88%",
-    height: "20%",
+    width: "84%",
     alignItems: "center",
     justifyContent: "space-between",
   },
   colorButtonsContainer: {
     flexDirection: "row",
     alignSelf: "flex-start",
-    justifyContent: "space-between",
   },
   chooseColor: {
     width: 30,
@@ -179,12 +175,12 @@ const styles = StyleSheet.create({
   },
 
   chooseColorText: {
-    flex: 1,
     fontSize: 16,
     fontWeight: "300",
     color: "#757083",
     textAlign: "left",
     alignSelf: "flex-start",
+    marginBottom: 10,
   },
 });
 
